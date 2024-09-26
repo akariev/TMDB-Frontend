@@ -2,6 +2,11 @@
 
 React-projekt oprettet med Vite som bundler. Projektet er designet til at være en letvægtsapplikation, der bruger moderne frontend-teknologier for at sikre hurtig udvikling og ydeevne.
 
+## Demo 
+
+En live demo af MovieDB kan findes her:
+[MovieDB Demo](https://moviedb-flame-six.vercel.app/)
+
 ## Teknologistack
 
 ### Frontend
