@@ -4,13 +4,16 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
-const API_URL = import.meta.env.API_URL as string;
-export default function Navbar() {
-    interface Genre {
-        id: number;
-        name: string;
-    }
+interface Genre {
+    id: number;
+    name: string;
+    key: string;
+}
 
+
+const API_URL = process.env.API_URL as string;
+
+export default function Navbar() {
     const [movieGenres, setMovieGenres] = useState<Genre[]>([]);
 
 
@@ -19,7 +22,15 @@ export default function Navbar() {
             try {
                 const response = await fetch(`${API_URL}api/Genres/genres`);
                 const data = await response.json();
-                setMovieGenres([...data.movieGenres, ...data.tvGenres]);
+                console.log('Genres:', data);
+
+                // Combine and map genres ensuring unique keys
+                const combinedGenres = [
+                    ...data.movieGenres.map((genre: Genre) => ({ ...genre, key: `movie-${genre.id}` })),
+                    ...data.tvGenres.map((genre: Genre) => ({ ...genre, key: `tv-${genre.id}` }))
+                ];
+
+                setMovieGenres(combinedGenres);
             } catch (error) {
                 console.error('Failed to fetch genres:', error);
             }
@@ -44,7 +55,12 @@ export default function Navbar() {
                                     <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-in-out">
                                         <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                             {movieGenres.map((genre) => (
-                                                <Link key={genre.id} to={`/genre/${genre.id}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                                <Link
+                                                    key={genre.key}
+                                                    to={`genre/${genre.id}`}
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    role="menuitem"
+                                                >
                                                     {genre.name}
                                                 </Link>
                                             ))}
