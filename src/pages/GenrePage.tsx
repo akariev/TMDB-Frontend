@@ -46,7 +46,7 @@ export default function GenrePage() {
         try {
             let url = isTVShowMode
                 ? `${API_URL}api/Genres/${genreId}/tvshows?page=${currentPage}`
-                : `${API_URL}/api/Genres/${genreId}/movies?page=${currentPage}`;
+                : `${API_URL}api/Genres/${genreId}/movies?page=${currentPage}`;
 
             const response = await fetch(url);
             if (!response.ok) throw new Error('Network response was not ok');
